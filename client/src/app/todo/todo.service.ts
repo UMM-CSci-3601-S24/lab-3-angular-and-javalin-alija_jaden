@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Todo, TodoRole } from './todo';
+import { Todo, TodoCategory } from './todo';
 
 /**
  * Service that provides the interface for getting information
@@ -40,20 +40,20 @@ export class TodoService {
    *  from the server after a possibly substantial delay (because we're
    *  contacting a remote server over the Internet).
    */
-  getTodos(filters?: { role?: TodoRole; age?: number; company?: string }): Observable<Todo[]> {
+  getTodos(filters?: { category?: TodoCategory; owner?: string; status?: boolean }): Observable<Todo[]> {
     // `HttpParams` is essentially just a map used to hold key-value
     // pairs that are then encoded as "?key1=value1&key2=value2&…" in
     // the URL when we make the call to `.get()` below.
     let httpParams: HttpParams = new HttpParams();
     if (filters) {
-      if (filters.role) {
-        httpParams = httpParams.set('role', filters.role);
+      if (filters.owner) {
+        httpParams = httpParams.set('owner', filters.owner);
       }
-      if (filters.age) {
-        httpParams = httpParams.set('age', filters.age.toString());
+      if (filters.status) {
+        httpParams = httpParams.set('status', filters.status.toString());
       }
-      if (filters.company) {
-        httpParams = httpParams.set('company', filters.company);
+      if (filters.category) {
+        httpParams = httpParams.set('category', filters.category);
       }
     }
     // Send the HTTP GET request with the given URL and parameters.
@@ -86,17 +86,17 @@ export class TodoService {
    * @param filters the map of key-value pairs used for the filtering
    * @returns an array of `Todos` matching the given filters
    */
-  filterTodos(todos: Todo[], filters: { name?: string; company?: string }): Todo[] {
+  filterTodos(todos: Todo[], filters: { owner?: string; category?: string }): Todo[] {
     let filteredTodos = todos;
 
-    if (filters.name) {
-      filters.name = filters.name.toLowerCase();
-      filteredTodos = filteredTodos.filter(todo => todo.name.toLowerCase().indexOf(filters.name) !== -1);
+    if (filters.owner) {
+      filters.owner = filters.owner.toLowerCase();
+      filteredTodos = filteredTodos.filter(todo => todo.owner.toLowerCase().indexOf(filters.owner) !== -1);
     }
 
-    if (filters.company) {
-      filters.company = filters.company.toLowerCase();
-      filteredTodos = filteredTodos.filter(todo => todo.company.toLowerCase().indexOf(filters.company) !== -1);
+    if (filters.category) {
+      filters.category = filters.category.toLowerCase();
+      filteredTodos = filteredTodos.filter(todo => todo.category.toLowerCase().indexOf(filters.category) !== -1);
     }
 
     return filteredTodos;
