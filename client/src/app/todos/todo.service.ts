@@ -61,6 +61,9 @@ export class TodoService {
       if (filters.category) {
         httpParams = httpParams.set('category', filters.category);
       }
+      if (filters.status) {
+        httpParams = httpParams.set('status', filters.status);
+      }
     }
     // Send the HTTP GET request with the given URL and parameters.
     // That will return the desired `Observable<Todo[]>`.

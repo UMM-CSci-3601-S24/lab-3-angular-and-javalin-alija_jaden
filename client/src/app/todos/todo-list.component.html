@@ -8,28 +8,22 @@
           <div class="flex-row gap-10 flex-wrap">
             <!-- Examples of filtering in Angular -->
   
-            <!-- <mat-form-field class="input-field">
-              <mat-label>Name</mat-label>
-              <input matInput data-test="todoNameInput" placeholder="Filter by name"
-                [(ngModel)]="todoName" (input)="updateFilter()">
-              <mat-hint>Filtered on client</mat-hint>
-            </mat-form-field> -->
-  
             <mat-form-field class="input-field">
               <mat-label>Owner</mat-label>
-              <input matInput data-test="todoOwnerInput" placeholder="Filter by owner"
+              <input matInput data-test="todoOwnerInput" placeholder="Filter by Owner"
                 [(ngModel)]="todoOwner" (input)="updateFilter()">
               <mat-hint>Filtered on client</mat-hint>
             </mat-form-field>
 
-            <!-- <mat-form-field class="input-field">
-              <mat-label>Owner</mat-label>
-              <input matInput data-test="todoCategoryInput" placeholder="Filter by category"
-                [(ngModel)]="todoCategory" (input)="updateFilter()">
+            <mat-form-field class="input-field">
+              <mat-label>Status</mat-label>
+              <mat-select (selectionChange)="updateFilter()" [(ngModel)]="todoStatus" data-test="todoStatusSelect">
+                <mat-option>--</mat-option>
+                <mat-option value="true">Complete</mat-option>
+                <mat-option value="false">Incomplete</mat-option>
+              </mat-select>
               <mat-hint>Filtered on client</mat-hint>
-            </mat-form-field> -->
-
-  
+            </mat-form-field>
         </div>
   
           <div class="flex-row gap-10 flex-wrap">
@@ -44,7 +38,7 @@
 
             <mat-form-field class="input-field">
               <mat-label>Category</mat-label>
-              <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoCategory" data-test="todoCategorySelect">
+              <mat-select (selectionChange)="updateFilter()" [(ngModel)]="todoCategory" data-test="todoCategorySelect">
                 <mat-option>--</mat-option>
                 <mat-option value="video games">Video Games</mat-option>
                 <mat-option value="homework">Homework</mat-option>
@@ -75,10 +69,11 @@
                       <h3 mat-subheader>Todos</h3>
                       @for (todo of this.filteredTodos; track todo._id) {
                         <a mat-list-item [routerLink]="['/todos', todo._id]" class="todo-list-item">
-                          <span matListItemLine class="todo-list-owner"> {{todo.owner}} </span>
-                          <span matListItemLine class="todo-list-body"> {{todo.body}} </span>
-                          <span matListItemLine class="todo-list-status"> {{todo.status}} </span>
-                          <span matListItemLine class="todo-list-category"> {{todo.category}} </span>
+                          <span matListItemLine class="todo-list-owner"> Owner: {{todo.owner}} </span>
+                          <span matListItemLine class="todo-list-body"> Body: {{todo.body}} </span>
+                          <span matListItemLine class="todo-list-status"> Status: {{todo.status}} </span>
+                          <span matListItemLine class="todo-list-category"> Category: {{todo.category}} </span>
+                          <span matListItemLine class="todo-list-category">  </span>
                         </a>
                       }
                     </mat-nav-list>
