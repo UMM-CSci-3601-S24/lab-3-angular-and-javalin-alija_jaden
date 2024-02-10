@@ -1,0 +1,87 @@
+<div class="flex-row">
+    <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
+  
+      <mat-card appearance="outlined" class="search-card">
+        <mat-card-title class="todo-list-title">Todos</mat-card-title>
+        <mat-card-content class="flex-col" >
+  
+          <div class="flex-row gap-10 flex-wrap">
+            <!-- Examples of filtering in Angular -->
+  
+            <!-- <mat-form-field class="input-field">
+              <mat-label>Name</mat-label>
+              <input matInput data-test="todoNameInput" placeholder="Filter by name"
+                [(ngModel)]="todoName" (input)="updateFilter()">
+              <mat-hint>Filtered on client</mat-hint>
+            </mat-form-field> -->
+  
+            <mat-form-field class="input-field">
+              <mat-label>Owner</mat-label>
+              <input matInput data-test="todoOwnerInput" placeholder="Filter by owner"
+                [(ngModel)]="todoOwner" (input)="updateFilter()">
+              <mat-hint>Filtered on client</mat-hint>
+            </mat-form-field>
+
+            <!-- <mat-form-field class="input-field">
+              <mat-label>Owner</mat-label>
+              <input matInput data-test="todoCategoryInput" placeholder="Filter by category"
+                [(ngModel)]="todoCategory" (input)="updateFilter()">
+              <mat-hint>Filtered on client</mat-hint>
+            </mat-form-field> -->
+
+  
+        </div>
+  
+          <div class="flex-row gap-10 flex-wrap">
+            <!-- Examples of filtering on the server -->
+  
+
+
+          </div>
+  
+          <br>
+
+  
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  
+    <div class="flex-row">
+      @if (serverFilteredTodos) {
+        <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" >
+          <!-- Switch between card and list view based on the viewType variable, set above in the mar-radio-group -->
+          <div>
+                <mat-card appearance="outlined">
+                  <mat-card-content>
+                    <mat-nav-list class="todo-nav-list">
+                      <h3 mat-subheader>Todos</h3>
+                      @for (todo of this.filteredTodos; track todo._id) {
+                        <a mat-list-item [routerLink]="['/todos', todo._id]" class="todo-list-item">
+                          <span matListItemLine class="todo-list-owner"> {{todo.owner}} </span>
+                        </a>
+                      }
+                    </mat-nav-list>
+                  </mat-card-content>
+                </mat-card>
+          </div>
+        </div>
+      } @else {
+        <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="todo-error">
+          <mat-error>
+            There was a problem loading the todos. Possibly the server is down or perhaps there are network
+            issues.
+          </mat-error>
+          <mat-error>
+            Error message: {{ this.errMsg }}
+          </mat-error>
+          <mat-error>
+            Please wait a bit and try again or start the server.
+          </mat-error>
+        </div>
+      }
+  
+      <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
+  
+    </div>
+  

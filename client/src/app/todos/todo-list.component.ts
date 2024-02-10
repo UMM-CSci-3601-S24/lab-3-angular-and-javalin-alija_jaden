@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Todo, TodoRole } from './todo';
 import { TodoService } from './todo.service';
 import { Subject, takeUntil } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { MatNavList, MatListSubheaderCssMatStyler, MatListItem, MatListItemAvatar, MatListItemTitle, MatListItemLine } from '@angular/material/list';
-import { TodoCardComponent } from './todo-card.component';
 
 import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { MatOption } from '@angular/material/core';
@@ -14,16 +12,24 @@ import { FormsModule } from '@angular/forms';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel, MatHint, MatError } from '@angular/material/form-field';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { Todo } from './todo';
 
 /**
  * A component that displays a list of todos, either as a grid
  * of cards or as a vertical list.
  *
- * The component supports local filtering by name and/or company,
+ * The component supports local filtering by owner and/or company,
  * and remote filtering (i.e., filtering by the server) by
  * role and/or age. These choices are fairly arbitrary here,
  * but in "real" projects you want to think about where it
  * makes the most sense to do the filtering.
+ *  _id: string;
+    owner: string;
+    status: boolean;
+    body: string;
+    category: string;
+    avatar?: string;
+    role: TodoRole;
  */
 @Component({
     selector: 'app-todo-list-component',
@@ -31,21 +37,22 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
     styleUrls: ['./todo-list.component.scss'],
     providers: [],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, MatHint, MatSelect, MatOption, MatRadioGroup, MatRadioButton, TodoCardComponent, MatNavList, MatListSubheaderCssMatStyler, MatListItem, RouterLink, MatListItemAvatar, MatListItemTitle, MatListItemLine, MatError]
+    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, MatHint, MatSelect, MatOption, MatRadioGroup, MatRadioButton, MatNavList, MatListSubheaderCssMatStyler, MatListItem, RouterLink, MatListItemAvatar, MatListItemTitle, MatListItemLine, MatError]
 })
 export class TodoListComponent implements OnInit, OnDestroy {
   // These are public so that tests can reference them (.spec.ts)
   public serverFilteredTodos: Todo[];
   public filteredTodos: Todo[];
-
-  public todoName: string;
-  public todoAge: number;
-  public todoRole: TodoRole;
-  public todoCompany: string;
-  public viewType: 'card' | 'list' = 'card';
+  public owner: string; 
+  public status: boolean; 
+  public body: string; 
+  public category: string;
+  
+  public viewType: 'list';
 
   errMsg = '';
   private ngUnsubscribe = new Subject<void>();
+  todoOwner: string;
 
   /**
    * This constructor injects both an instance of `TodoService`
@@ -68,8 +75,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
     // (For more on Observable, see: https://reactivex.io/documentation/observable.html)
     this.todoService.getTodos({
       // Filter the todos by the role and age specified in the GUI
-      role: this.todoRole,
-      age: this.todoAge
+      owner: this.todoOwner,
+      // category: this.todoCategory
     }).pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe({
@@ -98,8 +105,11 @@ export class TodoListComponent implements OnInit, OnDestroy {
    */
   public updateFilter() {
     this.filteredTodos = this.todoService.filterTodos(
-      this.serverFilteredTodos, { name: this.todoName, company: this.todoCompany }
+      this.serverFilteredTodos, { owner: this.todoOwner }
     );
+    // this.filteredTodos = this.todoService.filterTodos(
+    //   this.serverFilteredTodos, { category: this.todoCategory }
+    // );
   }
 
   /**

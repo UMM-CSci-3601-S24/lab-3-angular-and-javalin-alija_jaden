@@ -25,6 +25,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { UserService } from './app/users/user.service';
+import { TodoService } from './app/todos/todo.service';
 
 const MATERIAL_MODULES = [
   MatListModule,
@@ -54,7 +55,7 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
     providers: [
         importProvidersFrom(BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, MATERIAL_MODULES, LayoutModule),
-        UserService,
+        UserService, TodoService,
         provideAnimations(),
         provideHttpClient(withInterceptorsFromDi())
     ]
