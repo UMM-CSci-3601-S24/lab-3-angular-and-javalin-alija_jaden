@@ -1,50 +1,51 @@
 <div class="flex-row">
     <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
-  
+
       <mat-card appearance="outlined" class="search-card">
         <mat-card-title class="todo-list-title">Todos</mat-card-title>
         <mat-card-content class="flex-col" >
-  
+
           <div class="flex-row gap-10 flex-wrap">
             <!-- Examples of filtering in Angular -->
-  
+
             <mat-form-field class="input-field">
               <mat-label>Name</mat-label>
               <input matInput data-test="todoNameInput" placeholder="Filter by name"
-                [(ngModel)]="todoName" (input)="updateFilter()">
+                [(ngModel)]="todoOwner" (input)="updateFilter()">
               <mat-hint>Filtered on client</mat-hint>
             </mat-form-field>
-  
+
             <mat-form-field class="input-field">
-              <mat-label>Company</mat-label>
-              <input matInput data-test="todoCompanyInput" placeholder="Filter by company"
-                [(ngModel)]="todoCompany" (input)="updateFilter()">
+              <mat-label>Description</mat-label>
+              <input matInput data-test="todoDescInput" placeholder="Filter by description"
+                [(ngModel)]="todoBody" (input)="updateFilter()">
               <mat-hint>Filtered on client</mat-hint>
             </mat-form-field>
           </div>
-  
+
           <div class="flex-row gap-10 flex-wrap">
             <!-- Examples of filtering on the server -->
-  
+
             <mat-form-field class="input-field">
-              <mat-label>Age</mat-label>
-              <input matInput data-test="todoAgeInput" type="number" placeholder="Filter by age"
-                min="0" max="200" [(ngModel)]="todoAge" (input)="getTodosFromServer()">
+              <mat-label>Status</mat-label>
+              <input matInput data-test="todoStatusInput" type="number" placeholder="Filter by status"
+                min="0" max="200" [(ngModel)]="todoStatus" (input)="getTodosFromServer()">
               <mat-hint>Filtered on server</mat-hint>
             </mat-form-field>
-  
+
             <mat-form-field class="input-field">
-              <mat-label>Role</mat-label>
-              <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoRole" data-test="todoRoleSelect">
+              <mat-label>Category</mat-label>
+              <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoCategory" data-test="todoCategorySelect">
                 <mat-option>--</mat-option>
-                <mat-option value="admin">Admin</mat-option>
-                <mat-option value="editor">Editor</mat-option>
-                <mat-option value="viewer">Viewer</mat-option>
+                <mat-option value="groceries">Groceries</mat-option>
+                <mat-option value="homework">Homework</mat-option>
+                <mat-option value="software design">Software Design</mat-option>
+                <mat-option value="video games">Video Games</mat-option>
               </mat-select>
               <mat-hint>Filtered on server</mat-hint>
             </mat-form-field>
           </div>
-  
+
           <br>
             <div class="flex-row gap-10 flex-wrap">
               <label for="viewType">View type: </label>
@@ -53,12 +54,12 @@
                 <mat-radio-button value="list">List</mat-radio-button>
               </mat-radio-group>
             </div>
-  
+
           </mat-card-content>
         </mat-card>
       </div>
     </div>
-  
+
     <div class="flex-row">
       @if (serverFilteredTodos) {
         <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" >
@@ -81,11 +82,9 @@
                       <h3 mat-subheader>Todos</h3>
                       @for (todo of this.filteredTodos; track todo._id) {
                         <a mat-list-item [routerLink]="['/todos', todo._id]" class="todo-list-item">
-                          @if (this.todo.avatar) {
-                            <img matListItemAvatar [src]="todo.avatar" alt="Avatar for {{ todo.name }}">
-                          }
-                          <span matListItemTitle mat-line class="todo-list-name"> {{todo.name}} </span>
-                          <span matListItemLine class="todo-list-role"> {{todo.role}} </span>
+                          <span matListItemTitle mat-line class="todo-list-owner"> {{todo.owner}} </span>
+                          <span matListItemTitle mat-line class="todo-list-status"> {{todo.status}} </span>
+                          <span matListItemLine class="todo-list-category"> {{todo.category}} </span>
                         </a>
                       }
                     </mat-nav-list>
@@ -109,8 +108,7 @@
           </mat-error>
         </div>
       }
-  
+
       <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
-  
+
     </div>
-  

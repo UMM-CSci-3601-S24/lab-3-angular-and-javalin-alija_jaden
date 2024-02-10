@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Todo, TodoRole } from './todo';
+import { Todo, TodoCategory } from './todo';
 import { TodoService } from './todo.service';
 import { Subject, takeUntil } from 'rxjs';
 import { RouterLink } from '@angular/router';
@@ -38,10 +38,10 @@ export class TodoListComponent implements OnInit, OnDestroy {
   public serverFilteredTodos: Todo[];
   public filteredTodos: Todo[];
 
-  public todoName: string;
-  public todoAge: number;
-  public todoRole: TodoRole;
-  public todoCompany: string;
+  public todoOwner: string;
+  public todoStatus: boolean;
+  public todoCategory: TodoCategory;
+  public todoBody: string;
   public viewType: 'card' | 'list' = 'card';
 
   errMsg = '';
@@ -68,8 +68,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
     // (For more on Observable, see: https://reactivex.io/documentation/observable.html)
     this.todoService.getTodos({
       // Filter the todos by the role and age specified in the GUI
-      role: this.todoRole,
-      age: this.todoAge
+      category: this.todoCategory,
+      status: this.todoStatus
     }).pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe({
@@ -98,7 +98,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
    */
   public updateFilter() {
     this.filteredTodos = this.todoService.filterTodos(
-      this.serverFilteredTodos, { name: this.todoName, company: this.todoCompany }
+      this.serverFilteredTodos, { owner: this.todoOwner, category: this.todoCategory }
     );
   }
 
