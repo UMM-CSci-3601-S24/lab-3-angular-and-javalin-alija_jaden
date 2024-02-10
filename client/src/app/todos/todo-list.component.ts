@@ -43,16 +43,16 @@ export class TodoListComponent implements OnInit, OnDestroy {
   // These are public so that tests can reference them (.spec.ts)
   public serverFilteredTodos: Todo[];
   public filteredTodos: Todo[];
-  public owner: string; 
-  public status: boolean; 
-  public body: string; 
-  public category: string;
+  public todoOwner: string; 
+  public todoStatus: boolean; 
+  public todoBody: string; 
+  public todoCategory: string;
   
   public viewType: 'list';
 
   errMsg = '';
   private ngUnsubscribe = new Subject<void>();
-  todoOwner: string;
+  
 
   /**
    * This constructor injects both an instance of `TodoService`
@@ -76,7 +76,9 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.todoService.getTodos({
       // Filter the todos by the role and age specified in the GUI
       owner: this.todoOwner,
-      // category: this.todoCategory
+      category: this.todoCategory,
+      body: this.todoBody,
+      status: this.todoStatus
     }).pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe({
@@ -105,11 +107,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
    */
   public updateFilter() {
     this.filteredTodos = this.todoService.filterTodos(
-      this.serverFilteredTodos, { owner: this.todoOwner }
+      this.serverFilteredTodos, { owner: this.todoOwner, status: this.todoStatus, body: this.todoBody, category: this.todoCategory }
     );
-    // this.filteredTodos = this.todoService.filterTodos(
-    //   this.serverFilteredTodos, { category: this.todoCategory }
-    // );
   }
 
   /**
