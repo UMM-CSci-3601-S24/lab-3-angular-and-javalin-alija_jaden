@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TodoService } from './todo.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, filter, takeUntil } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { MatNavList, MatListSubheaderCssMatStyler, MatListItem, MatListItemAvatar, MatListItemTitle, MatListItemLine } from '@angular/material/list';
+import { CommonModule } from '@angular/common';
 
 import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { MatOption } from '@angular/material/core';
@@ -37,22 +38,31 @@ import { Todo } from './todo';
     styleUrls: ['./todo-list.component.scss'],
     providers: [],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, MatHint, MatSelect, MatOption, MatRadioGroup, MatRadioButton, MatNavList, MatListSubheaderCssMatStyler, MatListItem, RouterLink, MatListItemAvatar, MatListItemTitle, MatListItemLine, MatError]
+    imports: [CommonModule, MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, MatHint, MatSelect, MatOption, MatRadioGroup, MatRadioButton, MatNavList, MatListSubheaderCssMatStyler, MatListItem, RouterLink, MatListItemAvatar, MatListItemTitle, MatListItemLine, MatError]
 })
 export class TodoListComponent implements OnInit, OnDestroy {
   // These are public so that tests can reference them (.spec.ts)
   public serverFilteredTodos: Todo[];
   public filteredTodos: Todo[];
-  public todoOwner: string; 
-  public todoStatus: boolean; 
-  public todoBody: string; 
+  public todoOwner: string;
+  public todoStatus: boolean;
+  public todoBody: string;
   public todoCategory: string;
-  
+
   public viewType: 'list';
 
   errMsg = '';
   private ngUnsubscribe = new Subject<void>();
-  
+  popup = false;
+  curr_id = -1
+
+  popupOpen: boolean = false;
+  selectedTodo: Todo | null = null;
+
+  openPopup(todo: Todo) {
+    this.selectedTodo = todo;
+    this.popupOpen = true;
+  }
 
   /**
    * This constructor injects both an instance of `TodoService`
