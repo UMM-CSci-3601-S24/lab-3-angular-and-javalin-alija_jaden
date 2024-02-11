@@ -62,7 +62,7 @@ export class TodoService {
         httpParams = httpParams.set('category', filters.category);
       }
       if (filters.status) {
-        httpParams = httpParams.set('status', filters.status);
+        httpParams = httpParams.set('status', Boolean(filters.status));
       }
     }
     // Send the HTTP GET request with the given URL and parameters.
@@ -111,6 +111,10 @@ export class TodoService {
     if (filters.category) {
       filters.category = filters.category.toLowerCase();
       filteredTodos = filteredTodos.filter(todo => todo.category.toLowerCase().indexOf(filters.category) !== -1);
+    }
+
+    if (filters.status) {
+      filteredTodos = filteredTodos.filter(todo => todo.status.toString().indexOf(filters.status.toString()) !== -1);
     }
 
     return filteredTodos;
