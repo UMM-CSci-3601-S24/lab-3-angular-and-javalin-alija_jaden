@@ -44,9 +44,9 @@ export class TodoService {
     status: boolean;
     body: string;
     category: string;
-    avatar?: string;
+    limit?: number;
    */
-  getTodos(filters?: { owner?: string; status?: boolean; body?: string; category?: string; }): Observable<Todo[]> {
+  getTodos(filters?: { owner?: string; status?: boolean; body?: string; category?: string; limit?: number; order?: string;}): Observable<Todo[]> {
     // `HttpParams` is essentially just a map used to hold key-value
     // pairs that are then encoded as "?key1=value1&key2=value2&…" in
     // the URL when we make the call to `.get()` below.
@@ -64,6 +64,14 @@ export class TodoService {
       if (filters.status) {
         httpParams = httpParams.set('status', Boolean(filters.status));
       }
+      if (filters.limit) {
+        httpParams = httpParams.set('limit', filters.limit);
+      }
+
+      if (filters.order) {
+        httpParams = httpParams.set('order', filters.order);
+      }
+
     }
     // Send the HTTP GET request with the given URL and parameters.
     // That will return the desired `Observable<Todo[]>`.
@@ -95,9 +103,12 @@ export class TodoService {
    * @param filters the map of key-value pairs used for the filtering
    * @returns an array of `Todos` matching the given filters
    */
-  filterTodos(todos: Todo[], filters: { owner?: string; status?: boolean; body?: string; category?: string; }): Todo[] {
+  filterTodos(todos: Todo[], filters: { owner?: string; status?: boolean; body?: string; category?: string; limit?: number; order?: string}): Todo[] {
     let filteredTodos = todos;
-
+    if(filters.limit === undefined)
+    {
+      filteredTodos = todos
+    }
     if (filters.owner) {
       filters.owner = filters.owner.toLowerCase();
       filteredTodos = filteredTodos.filter(todo => todo.owner.toLowerCase().indexOf(filters.owner) !== -1);
@@ -115,6 +126,24 @@ export class TodoService {
 
     if (filters.status) {
       filteredTodos = filteredTodos.filter(todo => todo.status.toString().indexOf(filters.status.toString()) !== -1);
+    }
+
+    if (filters.limit) {
+      filteredTodos = filteredTodos.slice(0, filters.limit);
+    }
+
+    if (filters.order) {
+      if(filters.order === "owner")
+        filteredTodos = filteredTodos.sort((a, b) => a.owner.localeCompare(b.owner));
+      if(filters.order === "body") {
+        filteredTodos = filteredTodos.sort((a, b) => a.owner.localeCompare(b.owner));
+        filteredTodos = filteredTodos.sort((a, b) => a.body.localeCompare(b.body));
+      }
+      if(filters.order === "category")
+      {
+        filteredTodos = filteredTodos.sort((a, b) => a.owner.localeCompare(b.owner));
+        filteredTodos = filteredTodos.sort((a, b) => a.category.localeCompare(b.category));
+      }
     }
 
     return filteredTodos;

@@ -4,6 +4,6 @@ export interface Todo {
     status: boolean;
     body: string;
     category: string;
-    avatar?: string;
+    limit?: number;
   }
-  
+  export type TodoCategory = 'groceries' | 'homework' | 'software design' | 'video games';
