@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TodoService } from './todo.service';
-import { Subject, filter, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { MatNavList, MatListSubheaderCssMatStyler, MatListItem, MatListItemAvatar, MatListItemTitle, MatListItemLine } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
