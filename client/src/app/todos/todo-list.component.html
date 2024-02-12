@@ -12,7 +12,7 @@
             <mat-label>Owner</mat-label>
             <input matInput data-test="todoOwnerInput" placeholder="Filter by Owner"
               [(ngModel)]="todoOwner" (input)="updateFilter()">
-            <mat-hint>Filtered on server</mat-hint>
+            <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
 
           <mat-form-field class="input-field">
@@ -22,7 +22,7 @@
               <mat-option value="true">Complete</mat-option>
               <mat-option value="false">Incomplete</mat-option>
             </mat-select>
-            <mat-hint>Filtered on server</mat-hint>
+            <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
 
           <mat-form-field class="input-field">
@@ -57,13 +57,13 @@
               <mat-option value="software design">Software Design</mat-option>
               <mat-option value="groceries">Groceries</mat-option>
             </mat-select>
-            <mat-hint>Filtered on server</mat-hint>
+            <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
 
           <mat-form-field class="input-field">
             <mat-label>Limit</mat-label>
             <input matInput data-test="todoLimitInput" type="number" placeholder="Limit"
-              min="0" max="200" [(ngModel)]="todoLimit" (input)="getTodosFromServer()">
+              min="0" max="200" [(ngModel)]="todoLimit" (input)="updateFilter()">
             <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
 
