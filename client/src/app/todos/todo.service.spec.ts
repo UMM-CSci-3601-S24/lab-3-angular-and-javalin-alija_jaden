@@ -207,7 +207,7 @@ describe('TodoService', () => {
       });
     });
 
-    it('filters by company', () => {
+    it('filters by category', () => {
       const todoCategory = 'work';
       const filteredTodos = todoService.filterTodos(testTodos, { category: todoCategory });
       // There should be just one todo that has work as their company.
@@ -218,7 +218,15 @@ describe('TodoService', () => {
       });
     });
 
-    it('filters by name and company', () => {
+    it('filters by limit', () => {
+      const todoLimit = 1;
+      const filteredTodos = todoService.filterTodos(testTodos, { limit: todoLimit });
+      // There should be just one todo that has work as their company.
+      expect(filteredTodos.length).toBe(1);
+      // Every returned todo's company should contain 'work'.
+    });
+
+    it('filters by name and category', () => {
 
       const todoOwner = 'is';
       const todoCategory = 'ies';
